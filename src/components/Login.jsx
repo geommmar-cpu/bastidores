@@ -58,7 +58,7 @@ const Login = ({ onLogin, coordinators = [] }) => {
         <div style={{
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: 'radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%)',
+          background: 'radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.4) 100%)',
         }}></div>
 
         <div style={{
@@ -67,11 +67,11 @@ const Login = ({ onLogin, coordinators = [] }) => {
           maxWidth: '420px',
           padding: '2.5rem',
           borderRadius: '1.5rem',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.75)',
-          border: '1px solid rgba(255, 255, 255, 0.15)',
-          backgroundColor: 'rgba(20, 20, 25, 0.5)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          backgroundColor: 'rgba(20, 20, 25, 0.2)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
         }}>
           
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
