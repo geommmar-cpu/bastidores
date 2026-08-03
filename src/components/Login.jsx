@@ -45,13 +45,11 @@ const Login = ({ onLogin, coordinators = [] }) => {
       padding: '1rem',
       position: 'relative'
     }}>
-      {/* Overlay Escuro para destacar o card */}
+      {/* Dark gradient overlay to ensure the poster looks good and the card pops */}
       <div style={{
         position: 'absolute',
         top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.45)',
-        backdropFilter: 'blur(4px)',
-        WebkitBackdropFilter: 'blur(4px)'
+        background: 'radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%)',
       }}></div>
 
       <div style={{
@@ -61,30 +59,31 @@ const Login = ({ onLogin, coordinators = [] }) => {
         padding: '2.5rem',
         borderRadius: '1.5rem',
         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.75)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        backgroundColor: 'rgba(255, 255, 255, 0.85)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        border: '1px solid rgba(255, 255, 255, 0.15)',
+        backgroundColor: 'rgba(20, 20, 25, 0.75)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
       }}>
         
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{
             width: '72px',
             height: '72px',
-            background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%)',
+            background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.8) 0%, rgba(153, 27, 27, 0.9) 100%)',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 1rem auto',
-            boxShadow: '0 10px 15px -3px rgba(79, 70, 229, 0.4)'
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
+            border: '2px solid rgba(255,255,255,0.1)'
           }}>
-            <Lock size={32} color="white" />
+            <Lock size={30} color="white" />
           </div>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: '800', margin: '0', color: '#1F2937' }}>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: '800', margin: '0', color: '#F9FAFB', letterSpacing: '0.025em' }}>
             Acesso Restrito
           </h2>
-          <p style={{ fontSize: '0.9rem', color: '#4B5563', margin: '0.5rem 0 0 0', fontWeight: '500' }}>
+          <p style={{ fontSize: '0.9rem', color: '#D1D5DB', margin: '0.5rem 0 0 0', fontWeight: '400' }}>
             Equipe de Coordenação Bastidores
           </p>
         </div>
@@ -92,11 +91,11 @@ const Login = ({ onLogin, coordinators = [] }) => {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           <div>
-            <label style={{ display: 'block', fontWeight: '600', marginBottom: '0.5rem', color: '#374151', fontSize: '0.9rem' }}>
+            <label style={{ display: 'block', fontWeight: '500', marginBottom: '0.5rem', color: '#E5E7EB', fontSize: '0.9rem' }}>
               Seu Nome
             </label>
             <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', color: '#6B7280' }}>
+              <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', color: '#9CA3AF' }}>
                 <User size={18} />
               </div>
               <input 
@@ -109,25 +108,25 @@ const Login = ({ onLogin, coordinators = [] }) => {
                   width: '100%',
                   padding: '0.875rem 1rem 0.875rem 2.75rem', 
                   borderRadius: '0.75rem',
-                  border: '1px solid #D1D5DB',
-                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  color: 'white',
                   fontSize: '1rem',
                   outline: 'none',
-                  transition: 'all 0.2s',
-                  boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)'
+                  transition: 'all 0.3s',
                 }}
-                onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(79,70,229,0.2)'; }}
-                onBlur={(e) => { e.target.style.borderColor = '#D1D5DB'; e.target.style.boxShadow = 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)'; }}
+                onFocus={(e) => { e.target.style.borderColor = 'rgba(220, 38, 38, 0.6)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.5)'; }}
+                onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.3)'; }}
               />
             </div>
           </div>
 
           <div>
-            <label style={{ display: 'block', fontWeight: '600', marginBottom: '0.5rem', color: '#374151', fontSize: '0.9rem' }}>
+            <label style={{ display: 'block', fontWeight: '500', marginBottom: '0.5rem', color: '#E5E7EB', fontSize: '0.9rem' }}>
               Senha
             </label>
             <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', color: '#6B7280' }}>
+              <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', color: '#9CA3AF' }}>
                 <Lock size={18} />
               </div>
               <input 
@@ -140,15 +139,15 @@ const Login = ({ onLogin, coordinators = [] }) => {
                   width: '100%',
                   padding: '0.875rem 3rem 0.875rem 2.75rem', 
                   borderRadius: '0.75rem',
-                  border: '1px solid #D1D5DB',
-                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  color: 'white',
                   fontSize: '1rem',
                   outline: 'none',
-                  transition: 'all 0.2s',
-                  boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)'
+                  transition: 'all 0.3s',
                 }}
-                onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(79,70,229,0.2)'; }}
-                onBlur={(e) => { e.target.style.borderColor = '#D1D5DB'; e.target.style.boxShadow = 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)'; }}
+                onFocus={(e) => { e.target.style.borderColor = 'rgba(220, 38, 38, 0.6)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.5)'; }}
+                onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.3)'; }}
               />
               <button
                 type="button"
@@ -160,7 +159,7 @@ const Login = ({ onLogin, coordinators = [] }) => {
                   transform: 'translateY(-50%)',
                   background: 'none',
                   border: 'none',
-                  color: '#6B7280',
+                  color: '#9CA3AF',
                   cursor: 'pointer',
                   padding: 0,
                   display: 'flex',
@@ -176,13 +175,13 @@ const Login = ({ onLogin, coordinators = [] }) => {
           {error && (
             <div style={{
               padding: '0.875rem',
-              backgroundColor: '#FEF2F2',
-              color: '#991B1B',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              color: '#FCA5A5',
               borderRadius: '0.5rem',
-              border: '1px solid #F87171',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
               fontSize: '0.875rem',
               textAlign: 'center',
-              fontWeight: '600'
+              fontWeight: '500'
             }}>
               {error}
             </div>
@@ -198,14 +197,15 @@ const Login = ({ onLogin, coordinators = [] }) => {
               borderRadius: '0.75rem',
               marginTop: '0.5rem',
               color: 'white',
-              background: 'linear-gradient(to right, var(--primary), var(--primary-hover))',
-              border: 'none',
+              background: 'linear-gradient(to right, #DC2626, #991B1B)',
+              border: '1px solid rgba(255,255,255,0.1)',
               cursor: 'pointer',
-              boxShadow: '0 4px 6px -1px rgba(79, 70, 229, 0.3), 0 2px 4px -1px rgba(79, 70, 229, 0.2)',
-              transition: 'all 0.2s'
+              boxShadow: '0 4px 14px 0 rgba(220, 38, 38, 0.39)',
+              transition: 'all 0.2s',
+              textShadow: '0 1px 2px rgba(0,0,0,0.2)'
             }}
-            onMouseOver={(e) => e.target.style.filter = 'brightness(1.1)'}
-            onMouseOut={(e) => e.target.style.filter = 'brightness(1)'}
+            onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
+            onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
           >
             Entrar no Sistema
           </button>
