@@ -151,3 +151,89 @@ export const exportToPDF = (members, settings) => {
 
   doc.save(`Bastidores_${settings.eventName.replace(/\s+/g, '_')}.pdf`);
 };
+
+export const exportAttendancePDF = (members, settings) => {
+  const doc = new jsPDF('landscape');
+  
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  
+  const textCenter = (text, y) => {
+    const textWidth = doc.getTextWidth(text);
+    doc.text(text, (doc.internal.pageSize.width - textWidth) / 2, y);
+  };
+  
+  textCenter("Diocese de Luziânia", 15);
+  textCenter("Paróquia Santuário de Santo Antônio", 20);
+  textCenter("Santo Antônio do Descoberto - Goiás", 25);
+  textCenter(`MONTAGEM ${new Date().getFullYear()}`, 32);
+  
+  doc.setFillColor(30, 30, 30);
+  doc.rect(14, 35, doc.internal.pageSize.width - 28, 6, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(10);
+  textCenter("EQUIPE BASTIDORES - CONTROLE DE PRESENÇA", 39.5);
+  
+  doc.setTextColor(0, 0, 0);
+
+  const columns = settings.attendanceColumns || [];
+  const activeMembers = members.filter(m => !m.isDropout);
+  
+  const tableColumn = ["NOME", "FUNÇÃO", ...columns.map(c => c.toUpperCase())];
+  
+  const body = activeMembers.map(m => {
+    let nameText = m.name || '';
+    if (m.type === 'Casal' && m.spouseName) {
+      nameText = `${m.name} E ${m.spouseName}`;
+    }
+    
+    const row = [
+      nameText.toUpperCase(),
+      (m.role || '').toUpperCase()
+    ];
+    
+    columns.forEach(col => {
+      const isPresent = m.attendance && m.attendance[col];
+      row.push(isPresent ? "P" : "F"); // P for Presente, F for Falta
+    });
+    
+    return row;
+  });
+
+  autoTable(doc, {
+    startY: 45,
+    head: [tableColumn],
+    body: body,
+    theme: 'grid',
+    styles: { 
+      fontSize: 8,
+      cellPadding: 2,
+      lineColor: [100, 100, 100],
+      lineWidth: 0.1
+    },
+    headStyles: { 
+      fillColor: [30, 30, 30], 
+      textColor: [255, 255, 255],
+      halign: 'center'
+    },
+    columnStyles: {
+      0: { cellWidth: 'auto' },
+      1: { cellWidth: 30, halign: 'center' },
+      ...columns.reduce((acc, _, idx) => ({ ...acc, [idx + 2]: { cellWidth: 20, halign: 'center' } }), {})
+    },
+    margin: { top: 10, left: 14, right: 14 },
+    didParseCell: function(data) {
+      if (data.section === 'body' && data.column.index >= 2) {
+        if (data.cell.raw === 'P') {
+          data.cell.styles.textColor = [0, 150, 0];
+          data.cell.styles.fontStyle = 'bold';
+        } else if (data.cell.raw === 'F') {
+          data.cell.styles.textColor = [200, 0, 0];
+          data.cell.styles.fontStyle = 'bold';
+        }
+      }
+    }
+  });
+
+  doc.save(`Chamada_${settings.eventName.replace(/\s+/g, '_')}.pdf`);
+};

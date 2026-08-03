@@ -94,15 +94,15 @@ function App() {
       </nav>
 
       <main className="container flex-col gap-6" style={{ display: 'flex' }}>
-        <div className="flex gap-4 mb-2 border-b border-gray-200 pb-2">
+        <div className="tabs-container">
           <button 
-            className={`px-4 py-2 font-semibold ${currentTab === 'membros' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`tab-btn ${currentTab === 'membros' ? 'active' : ''}`}
             onClick={() => setCurrentTab('membros')}
           >
             Membros
           </button>
           <button 
-            className={`px-4 py-2 font-semibold ${currentTab === 'chamada' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`tab-btn ${currentTab === 'chamada' ? 'active' : ''}`}
             onClick={() => setCurrentTab('chamada')}
           >
             Chamada

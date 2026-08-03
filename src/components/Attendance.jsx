@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
-import { Check, X, Plus, Trash2 } from 'lucide-react';
+import { Check, X, Plus, Trash2, Download } from 'lucide-react';
+import { exportAttendancePDF } from '../utils/exportUtils';
 
 const Attendance = () => {
   const { members, settings, updateSettings, updateMember } = useContext(AppContext);
@@ -100,10 +101,15 @@ const Attendance = () => {
               </tr>
             </thead>
             <tbody>
-              {activeMembers.map(member => (
+              {activeMembers.map(member => {
+                const displayName = member.type === 'Casal' && member.spouseName 
+                  ? `${member.name} e ${member.spouseName}` 
+                  : member.name;
+                  
+                return (
                 <tr key={member.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="p-3 text-sm font-medium">{member.name}</td>
-                  <td className="p-3 text-sm text-gray-600">{member.role}</td>
+                  <td className="p-3 text-sm font-medium">{String(displayName || '').toUpperCase()}</td>
+                  <td className="p-3 text-sm text-gray-600">{String(member.role || '').toUpperCase()}</td>
                   {columns.map(col => {
                     const isPresent = member.attendance && member.attendance[col];
                     return (
@@ -123,7 +129,7 @@ const Attendance = () => {
                     );
                   })}
                 </tr>
-              ))}
+              )})}
               
               {activeMembers.length === 0 && (
                 <tr>
@@ -134,6 +140,18 @@ const Attendance = () => {
               )}
             </tbody>
           </table>
+          
+          {columns.length > 0 && activeMembers.length > 0 && (
+            <div className="mt-6 flex justify-end">
+              <button 
+                className="btn btn-primary" 
+                onClick={() => exportAttendancePDF(members, settings)}
+              >
+                <Download size={18} />
+                Gerar Relatório de Chamada
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
