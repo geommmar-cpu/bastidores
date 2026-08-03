@@ -46,20 +46,7 @@ export const getSortedMembers = (members) => {
       return a.isDropout ? 1 : -1;
     }
 
-    // 1. Original predefined order
-    const nameA = (a.name || '').toUpperCase().trim();
-    const nameB = (b.name || '').toUpperCase().trim();
-    
-    const indexA = originalOrder.indexOf(nameA);
-    const indexB = originalOrder.indexOf(nameB);
-    
-    if (indexA !== -1 && indexB !== -1) {
-      return indexA - indexB;
-    }
-    if (indexA !== -1) return -1; // A is in the list, B is new -> A comes first
-    if (indexB !== -1) return 1;  // B is in the list, A is new -> B comes first
-
-    // 2. If both are NEW (not in originalOrder), fallback to Role priority
+    // 1. Role priority (Coordenador -> Casal Apoio -> Componente)
     const rolePriority = {
       'Coordenador': 1,
       'Casal Apoio': 2,
@@ -69,7 +56,7 @@ export const getSortedMembers = (members) => {
     const roleB = rolePriority[b.role] || 99;
     if (roleA !== roleB) return roleA - roleB;
 
-    // 3. Type priority within Componentes (Casal = Tios, Jovem = Jovens)
+    // 2. Type priority within Componentes (Casal = Tios, Jovem = Jovens)
     const typePriority = {
       'Casal': 1,
       'Jovem': 2
@@ -78,7 +65,7 @@ export const getSortedMembers = (members) => {
     const typeB = typePriority[b.type] || 99;
     if (typeA !== typeB) return typeA - typeB;
 
-    // 4. Gender priority within Jovens (M then F)
+    // 3. Gender priority within Jovens (M then F)
     const genderPriority = {
       'M': 1,
       'F': 2
@@ -87,7 +74,20 @@ export const getSortedMembers = (members) => {
     const genderB = genderPriority[b.gender] || 99;
     if (genderA !== genderB) return genderA - genderB;
 
-    // 5. Alphabetical by name for the rest
+    // 4. Original predefined order (within the exact same group)
+    const nameA = (a.name || '').toUpperCase().trim();
+    const nameB = (b.name || '').toUpperCase().trim();
+    
+    const indexA = originalOrder.indexOf(nameA);
+    const indexB = originalOrder.indexOf(nameB);
+    
+    if (indexA !== -1 && indexB !== -1) {
+      return indexA - indexB; // Keep original relative order
+    }
+    if (indexA !== -1) return -1; // A is original, B is new -> A comes first (new people go to the bottom of the group)
+    if (indexB !== -1) return 1;  // B is original, A is new -> B comes first
+
+    // 5. If both are new additions (like José Wilson), sort alphabetically within the group
     return nameA.localeCompare(nameB);
   });
 };
