@@ -152,7 +152,14 @@ const MemberTable = ({ onEdit }) => {
                     </td>
                   ) : (
                     <>
-                      <td>{m.type}</td>
+                      <td>
+                        <div className="font-medium">{m.type}</div>
+                        {m.role && (
+                          <div className="text-xs text-indigo-600 font-semibold mt-1 uppercase">
+                            {m.role}
+                          </div>
+                        )}
+                      </td>
                       <td>
                         <div>{m.registrationType}</div>
                         {m.shirts && m.shirts.length > 0 && (
