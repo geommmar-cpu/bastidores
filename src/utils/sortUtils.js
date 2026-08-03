@@ -22,6 +22,8 @@ const originalOrder = [
   'DIOGO DINIZ',
   'WALLYSON NUNES DE OLIVEIRA',
   'VICTOR AUGUSTO MARQUES DE ARAÚJO',
+  'JOSE WILSON FERREIRA MENDES',
+  'JOSÉ WILSON FERREIRA MENDES',
   'JOSÉ WILSON',
   'JOSE WILSON',
   'ADRIELY AQUINO DA MATA',
@@ -50,65 +52,50 @@ export const getSortedMembers = (members) => {
 
     const nameA = (a.name || '').toUpperCase().trim();
     const nameB = (b.name || '').toUpperCase().trim();
-
-    // Helper to fix roles in case the database is wrong
-    const getSafeRole = (member, name) => {
-      if (['GEOMAR', 'JULIANA LOPES'].includes(name)) return 'Coordenador';
-      if (['GEOVANIO GOMES XAVIER'].includes(name)) return 'Casal Apoio';
-      return member.role || 'Componente';
-    };
-
-    const getSafeType = (member, name) => {
-      if (['GEOVANIO GOMES XAVIER'].includes(name)) return 'Casal';
-      return member.type || 'Jovem';
-    };
-
-    const roleA_val = getSafeRole(a, nameA);
-    const roleB_val = getSafeRole(b, nameB);
-
-    // 1. Role priority (Coordenador -> Casal Apoio -> Componente)
-    const rolePriority = {
-      'Coordenador': 1,
-      'Casal Apoio': 2,
-      'Componente': 3
-    };
-    const roleA = rolePriority[roleA_val] || 99;
-    const roleB = rolePriority[roleB_val] || 99;
-    if (roleA !== roleB) return roleA - roleB;
-
-    // 2. Type priority within Componentes (Casal = Tios, Jovem = Jovens)
-    const typeA_val = getSafeType(a, nameA);
-    const typeB_val = getSafeType(b, nameB);
     
-    const typePriority = {
-      'Casal': 1,
-      'Jovem': 2
-    };
-    const typeA = typePriority[typeA_val] || 99;
-    const typeB = typePriority[typeB_val] || 99;
-    if (typeA !== typeB) return typeA - typeB;
-
-    // 3. Gender priority within Jovens (M then F)
-    const genderPriority = {
-      'M': 1,
-      'F': 2
-    };
-    const genderA = genderPriority[a.gender] || 99;
-    const genderB = genderPriority[b.gender] || 99;
-    if (genderA !== genderB) return genderA - genderB;
-
-    // 4. Original predefined order (within the exact same group)
-    
+    // 1. ABSOLUTE PRIORITY: Original predefined order
     const indexA = originalOrder.indexOf(nameA);
     const indexB = originalOrder.indexOf(nameB);
     
     if (indexA !== -1 && indexB !== -1) {
-      return indexA - indexB; // Keep original relative order
+      return indexA - indexB; // Both are in the original list, strictly follow that order
     }
-    if (indexA !== -1) return -1; // A is original, B is new -> A comes first (new people go to the bottom of the group)
-    if (indexB !== -1) return 1;  // B is original, A is new -> B comes first
+    if (indexA !== -1 && indexB === -1) return -1; // A is in original list, B is not. A comes first.
+    if (indexA === -1 && indexB !== -1) return 1;  // B is in original list, A is not. B comes first.
 
-    // 5. If both are new additions (like José Wilson), sort alphabetically within the group
+    // 2. If both are new additions, sort by Role -> Type -> Gender -> Alphabetical
+    const roleA_val = (a.role || 'Componente').toUpperCase();
+    const roleB_val = (b.role || 'Componente').toUpperCase();
+
+    const rolePriority = {
+      'COORDENADOR': 1,
+      'CASAL APOIO': 2,
+      'COMPONENTE': 3
+    };
+    const roleNumA = rolePriority[roleA_val] || 99;
+    const roleNumB = rolePriority[roleB_val] || 99;
+    if (roleNumA !== roleNumB) return roleNumA - roleNumB;
+
+    const typeA_val = (a.type || 'Jovem').toUpperCase();
+    const typeB_val = (b.type || 'Jovem').toUpperCase();
+    
+    const typePriority = {
+      'CASAL': 1,
+      'JOVEM': 2
+    };
+    const typeNumA = typePriority[typeA_val] || 99;
+    const typeNumB = typePriority[typeB_val] || 99;
+    if (typeNumA !== typeNumB) return typeNumA - typeNumB;
+
+    const genderPriority = {
+      'M': 1,
+      'F': 2
+    };
+    const genderA = genderPriority[(a.gender || 'M').toUpperCase()] || 99;
+    const genderB = genderPriority[(b.gender || 'M').toUpperCase()] || 99;
+    if (genderA !== genderB) return genderA - genderB;
+
+    // 3. If both are new additions, sort alphabetically by name
     return nameA.localeCompare(nameB);
   });
 };
