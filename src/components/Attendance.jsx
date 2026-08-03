@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import { Check, X, Plus, Trash2, Download } from 'lucide-react';
 import { exportAttendancePDF } from '../utils/exportUtils';
-import { getSortedMembers } from '../utils/sortUtils';
+import { getSortedMembers } from '../utils/sorting';
 
 const Attendance = () => {
   const { members, settings, updateSettings, updateMember } = useContext(AppContext);

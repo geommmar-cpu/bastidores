@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import { Edit2, Trash2, Search, Paperclip, MessageCircle } from 'lucide-react';
-import { getSortedMembers } from '../utils/sortUtils';
+import { getSortedMembers } from '../utils/sorting';
 
 const formatCurrency = (value) => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
