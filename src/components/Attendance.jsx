@@ -116,11 +116,7 @@ const Attendance = () => {
                       <td key={col} className="p-3 text-center">
                         <button
                           onClick={() => toggleAttendance(member, col)}
-                          className={`w-8 h-8 rounded-full inline-flex items-center justify-center transition-colors ${
-                            isPresent 
-                              ? 'bg-green-100 text-green-600 hover:bg-green-200' 
-                              : 'bg-red-50 text-red-400 hover:bg-red-100'
-                          }`}
+                          className={`btn-attendance ${isPresent ? 'present' : 'absent'}`}
                           title={isPresent ? 'Presente (clique para faltar)' : 'Falta (clique para presença)'}
                         >
                           {isPresent ? <Check size={16} /> : <X size={16} />}

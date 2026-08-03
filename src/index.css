@@ -425,3 +425,32 @@ tbody tr:last-child td {
   border-bottom: 3px solid var(--primary);
   background: transparent;
 }
+
+/* Attendance Buttons */
+.btn-attendance {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-attendance.present {
+  background-color: #D1FAE5; /* green-100 */
+  color: #059669; /* green-600 */
+}
+.btn-attendance.present:hover {
+  background-color: #A7F3D0; /* green-200 */
+}
+
+.btn-attendance.absent {
+  background-color: #FEE2E2; /* red-100 */
+  color: #DC2626; /* red-600 */
+}
+.btn-attendance.absent:hover {
+  background-color: #FECACA; /* red-200 */
+}
