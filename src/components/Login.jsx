@@ -58,11 +58,11 @@ const Login = ({ onLogin, coordinators = [] }) => {
         maxWidth: '420px',
         padding: '2.5rem',
         borderRadius: '1.5rem',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.75)',
-        border: '1px solid rgba(255, 255, 255, 0.15)',
-        backgroundColor: 'rgba(20, 20, 25, 0.75)',
-        backdropFilter: 'blur(24px)',
-        WebkitBackdropFilter: 'blur(24px)',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        backgroundColor: 'rgba(20, 20, 25, 0.35)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
       }}>
         
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
