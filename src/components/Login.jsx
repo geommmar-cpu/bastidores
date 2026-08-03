@@ -93,7 +93,7 @@ const Login = ({ onLogin, coordinators = [] }) => {
               Acesso Restrito
             </h2>
             <p style={{ fontSize: '0.9rem', color: '#D1D5DB', margin: '0.5rem 0 0 0', fontWeight: '400' }}>
-              Equipe de Coordenação Bastidores
+              Equipe Bastidores
             </p>
           </div>
 
@@ -242,7 +242,7 @@ const Login = ({ onLogin, coordinators = [] }) => {
               Acesso Restrito
             </h1>
             <p style={{ fontSize: '1rem', color: '#6B7280', margin: 0 }}>
-              Equipe de Coordenação Bastidores
+              Equipe Bastidores
             </p>
           </div>
 
