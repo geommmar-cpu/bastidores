@@ -53,17 +53,7 @@ export const getSortedMembers = (members) => {
     const nameA = (a.name || '').toUpperCase().trim();
     const nameB = (b.name || '').toUpperCase().trim();
     
-    // 1. ABSOLUTE PRIORITY: Original predefined order
-    const indexA = originalOrder.indexOf(nameA);
-    const indexB = originalOrder.indexOf(nameB);
-    
-    if (indexA !== -1 && indexB !== -1) {
-      return indexA - indexB; // Both are in the original list, strictly follow that order
-    }
-    if (indexA !== -1 && indexB === -1) return -1; // A is in original list, B is not. A comes first.
-    if (indexA === -1 && indexB !== -1) return 1;  // B is in original list, A is not. B comes first.
-
-    // 2. If both are new additions, sort by Role -> Type -> Gender -> Alphabetical
+    // 1. Role priority (Coordenador -> Casal Apoio -> Componente)
     const roleA_val = (a.role || 'Componente').toUpperCase();
     const roleB_val = (b.role || 'Componente').toUpperCase();
 
@@ -76,6 +66,7 @@ export const getSortedMembers = (members) => {
     const roleNumB = rolePriority[roleB_val] || 99;
     if (roleNumA !== roleNumB) return roleNumA - roleNumB;
 
+    // 2. Type priority (Casal -> Jovem)
     const typeA_val = (a.type || 'Jovem').toUpperCase();
     const typeB_val = (b.type || 'Jovem').toUpperCase();
     
@@ -87,6 +78,7 @@ export const getSortedMembers = (members) => {
     const typeNumB = typePriority[typeB_val] || 99;
     if (typeNumA !== typeNumB) return typeNumA - typeNumB;
 
+    // 3. Gender priority (Meninos -> Meninas)
     const genderPriority = {
       'M': 1,
       'F': 2
@@ -95,7 +87,26 @@ export const getSortedMembers = (members) => {
     const genderB = genderPriority[(b.gender || 'M').toUpperCase()] || 99;
     if (genderA !== genderB) return genderA - genderB;
 
-    // 3. If both are new additions, sort alphabetically by name
+    // 4. Original predefined order (with partial matching so surnames don't break it)
+    const getMatchIndex = (name) => {
+      // Remove accents for better matching
+      const cleanName = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      return originalOrder.findIndex(orig => {
+        const cleanOrig = orig.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return cleanName.includes(cleanOrig) || cleanOrig.includes(cleanName);
+      });
+    };
+
+    const indexA = getMatchIndex(nameA);
+    const indexB = getMatchIndex(nameB);
+    
+    if (indexA !== -1 && indexB !== -1) {
+      return indexA - indexB; // Both are in the original list, strictly follow that order
+    }
+    if (indexA !== -1 && indexB === -1) return -1; // A is original, B is new -> A comes first
+    if (indexA === -1 && indexB !== -1) return 1;  // B is original, A is new -> B comes first
+
+    // 5. If both are new additions, sort alphabetically by name
     return nameA.localeCompare(nameB);
   });
 };
