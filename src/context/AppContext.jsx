@@ -33,11 +33,27 @@ export const AppProvider = ({ children }) => {
         let finalMembers = [];
 
         if (supaMembers && supaMembers.length > 0) {
-          finalMembers = supaMembers.map(row => row.data);
+          finalMembers = supaMembers.map(row => {
+            const localObj = localMembers?.find(m => m.id === row.id);
+            if (localObj) {
+              // Mescla os dados de presença locais para não perder caso o Supabase falhe
+              return { 
+                ...row.data, 
+                attendance: { ...(row.data.attendance || {}), ...(localObj.attendance || {}) } 
+              };
+            }
+            return row.data;
+          });
           
           if (supaSettings && supaSettings.length > 0) {
              const setRow = supaSettings.find(s => s.id === 'main');
-             if (setRow) setSettings(setRow.data);
+             if (setRow) {
+               // Mescla as colunas de chamada
+               const localCols = localSettings?.attendanceColumns || [];
+               const supaCols = setRow.data.attendanceColumns || [];
+               const mergedCols = [...new Set([...supaCols, ...localCols])];
+               setSettings({ ...setRow.data, attendanceColumns: mergedCols });
+             }
           }
         }
 
@@ -123,6 +139,19 @@ export const AppProvider = ({ children }) => {
     };
   }, []);
 
+  // Persist locally automatically
+  useEffect(() => {
+    if (!loading) {
+      localforage.setItem('bastidores_members', members).catch(console.error);
+    }
+  }, [members, loading]);
+
+  useEffect(() => {
+    if (!loading) {
+      localforage.setItem('bastidores_settings', settings).catch(console.error);
+    }
+  }, [settings, loading]);
+
   const updateSettings = async (newSettings) => {
     const updated = { ...settings, ...newSettings };
     setSettings(updated);
@@ -132,21 +161,34 @@ export const AppProvider = ({ children }) => {
   const addMember = async (member) => {
     const newMember = { ...member, id: member.id || crypto.randomUUID() };
     setMembers(prev => [...prev, newMember]);
-    await supabase.from('members').insert({ id: newMember.id, data: newMember });
+    const { error } = await supabase.from('members').insert({ id: newMember.id, data: newMember });
+    if (error) console.error("Erro ao inserir membro:", error);
   };
 
   const updateMember = async (id, updatedData) => {
+    let updatedMember = null;
+    
     setMembers(prev => {
-       const newArray = prev.map(m => m.id === id ? { ...m, ...updatedData } : m);
-       const updatedMember = newArray.find(m => m.id === id);
-       supabase.from('members').update({ data: updatedMember }).eq('id', id);
+       const newArray = prev.map(m => {
+         if (m.id === id) {
+           updatedMember = { ...m, ...updatedData };
+           return updatedMember;
+         }
+         return m;
+       });
        return newArray;
     });
+
+    if (updatedMember) {
+      const { error } = await supabase.from('members').update({ data: updatedMember }).eq('id', id);
+      if (error) console.error("Erro ao atualizar membro no Supabase:", error);
+    }
   };
 
   const deleteMember = async (id) => {
     setMembers(prev => prev.filter(m => m.id !== id));
-    await supabase.from('members').delete().eq('id', id);
+    const { error } = await supabase.from('members').delete().eq('id', id);
+    if (error) console.error("Erro ao deletar membro:", error);
   };
 
   return (
