@@ -52,7 +52,6 @@ export const exportToPDF = (members, settings) => {
   textCenter("Diocese de Luziânia", 15);
   textCenter("Paróquia Santuário de Santo Antônio", 20);
   textCenter("Santo Antônio do Descoberto - Goiás", 25);
-  textCenter(`MONTAGEM ${new Date().getFullYear()}`, 32);
   
   // Team Header Bar
   doc.setFillColor(30, 30, 30);
@@ -167,7 +166,6 @@ export const exportAttendancePDF = (members, settings) => {
   textCenter("Diocese de Luziânia", 15);
   textCenter("Paróquia Santuário de Santo Antônio", 20);
   textCenter("Santo Antônio do Descoberto - Goiás", 25);
-  textCenter(`MONTAGEM ${new Date().getFullYear()}`, 32);
   
   doc.setFillColor(30, 30, 30);
   doc.rect(14, 35, doc.internal.pageSize.width - 28, 6, 'F');
