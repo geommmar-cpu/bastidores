@@ -89,7 +89,7 @@ const Attendance = () => {
                     <div className="flex flex-col items-center gap-1">
                       <span>{col}</span>
                       <button 
-                        className="text-red-500 hover:text-red-700 p-1"
+                        className="btn-icon-danger"
                         onClick={() => handleRemoveColumn(col)}
                         title="Remover coluna"
                       >

@@ -454,3 +454,22 @@ tbody tr:last-child td {
 .btn-attendance.absent:hover {
   background-color: #FECACA; /* red-200 */
 }
+
+/* Icon Buttons */
+.btn-icon-danger {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.btn-icon-danger:hover {
+  background-color: #FEE2E2;
+  color: var(--danger);
+}
