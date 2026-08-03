@@ -34,182 +34,213 @@ const Login = ({ onLogin, coordinators = [] }) => {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundImage: 'url("/login-bg.jpg")',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      padding: '1rem',
-      position: 'relative'
-    }}>
-      {/* Dark gradient overlay to ensure the poster looks good and the card pops */}
-      <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,
-        background: 'radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%)',
-      }}></div>
-
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        maxWidth: '420px',
-        padding: '2.5rem',
-        borderRadius: '1.5rem',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        backgroundColor: 'rgba(20, 20, 25, 0.35)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-      }}>
+    <div className="min-h-screen flex" style={{ backgroundColor: '#0f0f13' }}>
+      
+      {/* Esquerda: Poster (Só aparece no PC/Tablet) */}
+      <div className="hidden md:flex md:w-1/2 relative items-center justify-center p-8 overflow-hidden">
+        {/* Fundo borrado da mesma imagem pra preencher os cantos pretos com a cor do poster */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: 'url("/login-bg.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(40px)',
+          opacity: 0.6,
+          transform: 'scale(1.2)'
+        }}></div>
         
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{
-            width: '72px',
-            height: '72px',
-            background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.8) 0%, rgba(153, 27, 27, 0.9) 100%)',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 1rem auto',
-            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
-            border: '2px solid rgba(255,255,255,0.1)'
-          }}>
-            <Lock size={30} color="white" />
-          </div>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: '800', margin: '0', color: '#F9FAFB', letterSpacing: '0.025em' }}>
-            Acesso Restrito
-          </h2>
-          <p style={{ fontSize: '0.9rem', color: '#D1D5DB', margin: '0.5rem 0 0 0', fontWeight: '400' }}>
-            Equipe de Coordenação Bastidores
-          </p>
-        </div>
+        {/* Poster nítido sem cortar */}
+        <img 
+          src="/login-bg.jpg" 
+          alt="SEGUE-ME XXXIII" 
+          style={{ 
+            position: 'relative',
+            maxHeight: '100%', 
+            maxWidth: '100%', 
+            objectFit: 'contain',
+            borderRadius: '1rem',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.75)'
+          }} 
+        />
+      </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      {/* Direita: Formulário de Login */}
+      <div className="w-full md:w-1/2 flex items-center justify-center relative p-4">
+        
+        {/* Fundo mobile (oculto no PC) - Imagem cortada no fundo apenas para celulares */}
+        <div className="md:hidden" style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: 'url("/login-bg.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}></div>
+        
+        {/* Overlay escuro pro mobile */}
+        <div className="md:hidden" style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%)',
+        }}></div>
+
+        {/* Card do Formulário */}
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '420px',
+          padding: '2.5rem',
+          borderRadius: '1.5rem',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          backgroundColor: 'rgba(20, 20, 25, 0.6)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+        }}>
           
-          <div>
-            <label style={{ display: 'block', fontWeight: '500', marginBottom: '0.5rem', color: '#E5E7EB', fontSize: '0.9rem' }}>
-              Seu Nome
-            </label>
-            <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', color: '#9CA3AF' }}>
-                <User size={18} />
-              </div>
-              <input 
-                type="text" 
-                placeholder="Ex: Geomar" 
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                style={{ 
-                  width: '100%',
-                  padding: '0.875rem 1rem 0.875rem 2.75rem', 
-                  borderRadius: '0.75rem',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                  color: 'white',
-                  fontSize: '1rem',
-                  outline: 'none',
-                  transition: 'all 0.3s',
-                }}
-                onFocus={(e) => { e.target.style.borderColor = 'rgba(220, 38, 38, 0.6)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.5)'; }}
-                onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.3)'; }}
-              />
-            </div>
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontWeight: '500', marginBottom: '0.5rem', color: '#E5E7EB', fontSize: '0.9rem' }}>
-              Senha
-            </label>
-            <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', color: '#9CA3AF' }}>
-                <Lock size={18} />
-              </div>
-              <input 
-                type={showPassword ? 'text' : 'password'} 
-                placeholder="••••••••" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                style={{ 
-                  width: '100%',
-                  padding: '0.875rem 3rem 0.875rem 2.75rem', 
-                  borderRadius: '0.75rem',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                  color: 'white',
-                  fontSize: '1rem',
-                  outline: 'none',
-                  transition: 'all 0.3s',
-                }}
-                onFocus={(e) => { e.target.style.borderColor = 'rgba(220, 38, 38, 0.6)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.5)'; }}
-                onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.3)'; }}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  right: '1rem',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  color: '#9CA3AF',
-                  cursor: 'pointer',
-                  padding: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-          </div>
-
-          {error && (
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div style={{
-              padding: '0.875rem',
-              backgroundColor: 'rgba(239, 68, 68, 0.1)',
-              color: '#FCA5A5',
-              borderRadius: '0.5rem',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
-              fontSize: '0.875rem',
-              textAlign: 'center',
-              fontWeight: '500'
+              width: '72px',
+              height: '72px',
+              background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.8) 0%, rgba(153, 27, 27, 0.9) 100%)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1rem auto',
+              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
+              border: '2px solid rgba(255,255,255,0.1)'
             }}>
-              {error}
+              <Lock size={30} color="white" />
             </div>
-          )}
+            <h2 style={{ fontSize: '1.75rem', fontWeight: '800', margin: '0', color: '#F9FAFB', letterSpacing: '0.025em' }}>
+              Acesso Restrito
+            </h2>
+            <p style={{ fontSize: '0.9rem', color: '#D1D5DB', margin: '0.5rem 0 0 0', fontWeight: '400' }}>
+              Equipe de Coordenação Bastidores
+            </p>
+          </div>
 
-          <button 
-            type="submit" 
-            style={{
-              width: '100%',
-              padding: '1rem',
-              fontSize: '1.1rem',
-              fontWeight: 'bold',
-              borderRadius: '0.75rem',
-              marginTop: '0.5rem',
-              color: 'white',
-              background: 'linear-gradient(to right, #DC2626, #991B1B)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              cursor: 'pointer',
-              boxShadow: '0 4px 14px 0 rgba(220, 38, 38, 0.39)',
-              transition: 'all 0.2s',
-              textShadow: '0 1px 2px rgba(0,0,0,0.2)'
-            }}
-            onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
-            onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-          >
-            Entrar no Sistema
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            
+            <div>
+              <label style={{ display: 'block', fontWeight: '500', marginBottom: '0.5rem', color: '#E5E7EB', fontSize: '0.9rem' }}>
+                Seu Nome
+              </label>
+              <div style={{ position: 'relative' }}>
+                <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', color: '#9CA3AF' }}>
+                  <User size={18} />
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="Ex: Geomar" 
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  style={{ 
+                    width: '100%',
+                    padding: '0.875rem 1rem 0.875rem 2.75rem', 
+                    borderRadius: '0.75rem',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                    color: 'white',
+                    fontSize: '1rem',
+                    outline: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  onFocus={(e) => { e.target.style.borderColor = 'rgba(220, 38, 38, 0.6)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.6)'; }}
+                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.4)'; }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontWeight: '500', marginBottom: '0.5rem', color: '#E5E7EB', fontSize: '0.9rem' }}>
+                Senha
+              </label>
+              <div style={{ position: 'relative' }}>
+                <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', color: '#9CA3AF' }}>
+                  <Lock size={18} />
+                </div>
+                <input 
+                  type={showPassword ? 'text' : 'password'} 
+                  placeholder="••••••••" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  style={{ 
+                    width: '100%',
+                    padding: '0.875rem 3rem 0.875rem 2.75rem', 
+                    borderRadius: '0.75rem',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                    color: 'white',
+                    fontSize: '1rem',
+                    outline: 'none',
+                    transition: 'all 0.3s',
+                  }}
+                  onFocus={(e) => { e.target.style.borderColor = 'rgba(220, 38, 38, 0.6)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.6)'; }}
+                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.4)'; }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    right: '1rem',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    color: '#9CA3AF',
+                    cursor: 'pointer',
+                    padding: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {error && (
+              <div style={{
+                padding: '0.875rem',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                color: '#FCA5A5',
+                borderRadius: '0.5rem',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                fontSize: '0.875rem',
+                textAlign: 'center',
+                fontWeight: '500'
+              }}>
+                {error}
+              </div>
+            )}
+
+            <button 
+              type="submit" 
+              style={{
+                width: '100%',
+                padding: '1rem',
+                fontSize: '1.1rem',
+                fontWeight: 'bold',
+                borderRadius: '0.75rem',
+                marginTop: '0.5rem',
+                color: 'white',
+                background: 'linear-gradient(to right, #DC2626, #991B1B)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                cursor: 'pointer',
+                boxShadow: '0 4px 14px 0 rgba(220, 38, 38, 0.39)',
+                transition: 'all 0.2s',
+                textShadow: '0 1px 2px rgba(0,0,0,0.2)'
+              }}
+              onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
+              onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+            >
+              Entrar no Sistema
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
