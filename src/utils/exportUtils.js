@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { getSortedMembers } from './sortUtils';
 
 const formatCurrency = (value) => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
@@ -76,7 +77,7 @@ export const exportToPDF = (members, settings) => {
   const body = [];
 
   groups.forEach(group => {
-    const groupMembers = members.filter(group.filter);
+    const groupMembers = getSortedMembers(members.filter(group.filter));
     
     if (groupMembers.length > 0) {
       // Add section header row
@@ -177,7 +178,7 @@ export const exportAttendancePDF = (members, settings) => {
   doc.setTextColor(0, 0, 0);
 
   const columns = settings.attendanceColumns || [];
-  const activeMembers = members.filter(m => !m.isDropout);
+  const activeMembers = getSortedMembers(members.filter(m => !m.isDropout));
   
   const tableColumn = ["NOME", "FUNÇÃO", ...columns.map(c => c.toUpperCase())];
   

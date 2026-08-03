@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import { Check, X, Plus, Trash2, Download } from 'lucide-react';
 import { exportAttendancePDF } from '../utils/exportUtils';
+import { getSortedMembers } from '../utils/sortUtils';
 
 const Attendance = () => {
   const { members, settings, updateSettings, updateMember } = useContext(AppContext);
@@ -44,8 +45,8 @@ const Attendance = () => {
     });
   };
 
-  // Filter out dropouts
-  const activeMembers = members.filter(m => !m.isDropout);
+  // Filter out dropouts and sort
+  const activeMembers = getSortedMembers(members.filter(m => !m.isDropout));
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">

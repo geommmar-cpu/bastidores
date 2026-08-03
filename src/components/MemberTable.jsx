@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import { Edit2, Trash2, Search, Paperclip, MessageCircle } from 'lucide-react';
+import { getSortedMembers } from '../utils/sortUtils';
 
 const formatCurrency = (value) => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
@@ -35,6 +36,8 @@ const MemberTable = ({ onEdit }) => {
     // Since paymentStatus is 'Desistente', it will work automatically because calculateStatus sets it to 'Desistente'.
     return matchesSearch && matchesType && matchesStatus;
   });
+
+  const sortedFilteredMembers = getSortedMembers(filteredMembers);
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
@@ -97,14 +100,14 @@ const MemberTable = ({ onEdit }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredMembers.length === 0 ? (
+            {sortedFilteredMembers.length === 0 ? (
               <tr>
                 <td colSpan="7" className="text-center text-muted" style={{ padding: '2rem' }}>
                   Nenhum membro encontrado.
                 </td>
               </tr>
             ) : (
-              filteredMembers.map(m => (
+              sortedFilteredMembers.map(m => (
                 <tr key={m.id} style={m.isDropout ? { backgroundColor: '#FEF2F2', opacity: 0.8 } : {}}>
                   <td>
                     <div 
