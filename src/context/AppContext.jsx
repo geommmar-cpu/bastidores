@@ -7,8 +7,10 @@ export const AppContext = createContext();
 
 const defaultSettings = {
   eventName: 'SEGUE-ME XXXIII',
-  priceWithShirt: 100,
-  priceWithoutShirt: 50,
+  priceWithShirt: 130,
+  priceWithoutShirt: 80,
+  priceWithShirtCasal: 260,
+  priceWithoutShirtCasal: 160,
   coordinators: ['Coordenador 1', 'Coordenador 2', 'Coordenador 3', 'Coordenador 4']
 };
 

@@ -7,8 +7,10 @@ const SettingsModal = ({ onClose }) => {
   
   const [formData, setFormData] = useState({
     eventName: settings.eventName,
-    priceWithShirt: settings.priceWithShirt,
-    priceWithoutShirt: settings.priceWithoutShirt,
+    priceWithShirt: settings.priceWithShirt || 130,
+    priceWithoutShirt: settings.priceWithoutShirt || 80,
+    priceWithShirtCasal: settings.priceWithShirtCasal || 260,
+    priceWithoutShirtCasal: settings.priceWithoutShirtCasal || 160,
     coordinators: [...settings.coordinators]
   });
 
@@ -28,7 +30,9 @@ const SettingsModal = ({ onClose }) => {
     updateSettings({
       ...formData,
       priceWithShirt: parseFloat(formData.priceWithShirt) || 0,
-      priceWithoutShirt: parseFloat(formData.priceWithoutShirt) || 0
+      priceWithoutShirt: parseFloat(formData.priceWithoutShirt) || 0,
+      priceWithShirtCasal: parseFloat(formData.priceWithShirtCasal) || 0,
+      priceWithoutShirtCasal: parseFloat(formData.priceWithoutShirtCasal) || 0
     });
     onClose();
   };
@@ -50,12 +54,20 @@ const SettingsModal = ({ onClose }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 mb-4">
               <div className="input-group">
-                <label className="input-label">Valor Ficha (Com Camisa)</label>
+                <label className="input-label">Ficha Individual (Com Camisa)</label>
                 <input required type="number" step="0.01" min="0" name="priceWithShirt" className="input" value={formData.priceWithShirt} onChange={handleChange} />
               </div>
               <div className="input-group">
-                <label className="input-label">Valor Ficha (Sem Camisa)</label>
+                <label className="input-label">Ficha Individual (Sem Camisa)</label>
                 <input required type="number" step="0.01" min="0" name="priceWithoutShirt" className="input" value={formData.priceWithoutShirt} onChange={handleChange} />
+              </div>
+              <div className="input-group">
+                <label className="input-label">Ficha Casal (Com Camisa)</label>
+                <input required type="number" step="0.01" min="0" name="priceWithShirtCasal" className="input" value={formData.priceWithShirtCasal} onChange={handleChange} />
+              </div>
+              <div className="input-group">
+                <label className="input-label">Ficha Casal (Sem Camisa)</label>
+                <input required type="number" step="0.01" min="0" name="priceWithoutShirtCasal" className="input" value={formData.priceWithoutShirtCasal} onChange={handleChange} />
               </div>
             </div>
             

@@ -37,15 +37,19 @@ const MemberModal = ({ onClose, editingMember }) => {
   // Recalculate total value when type or shirts change (only if not editing, or if user changes type)
   useEffect(() => {
     if (!editingMember) {
-      let total = formData.registrationType === 'Com Camisa' 
-        ? settings.priceWithShirt 
-        : settings.priceWithoutShirt;
-        
-      // Se for casal, geralmente cobra em dobro ou cada um paga sua ficha. Vamos assumir que a ficha é individual e o casal preenche duas fichas,
-      // ou a ficha do casal já tem o valor. O usuário pediu para editar o total manualmente.
+      let total = 0;
+      if (formData.type === 'Casal') {
+        total = formData.registrationType === 'Com Camisa' 
+          ? (settings.priceWithShirtCasal || 260) 
+          : (settings.priceWithoutShirtCasal || 160);
+      } else {
+        total = formData.registrationType === 'Com Camisa' 
+          ? (settings.priceWithShirt || 130) 
+          : (settings.priceWithoutShirt || 80);
+      }
       setFormData(prev => ({ ...prev, totalValue: total }));
     }
-  }, [formData.registrationType, settings.priceWithShirt, settings.priceWithoutShirt]);
+  }, [formData.registrationType, formData.type, settings.priceWithShirt, settings.priceWithoutShirt, settings.priceWithShirtCasal, settings.priceWithoutShirtCasal]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
