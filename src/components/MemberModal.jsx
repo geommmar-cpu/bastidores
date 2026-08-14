@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
 import { X, Plus, Trash2 } from 'lucide-react';
 
-const SHIRT_SIZES = ['PP', 'P', 'M', 'G', 'GG', 'XG', 'BABYLOOK'];
+const SHIRT_SIZES = ['BL/P', 'BL/M', 'BL/G', 'PP', 'P', 'M', 'G', 'GG', 'XG'];
 
 const MemberModal = ({ onClose, editingMember }) => {
   const { settings, addMember, updateMember } = useContext(AppContext);
