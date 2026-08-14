@@ -28,8 +28,6 @@ const Dashboard = () => {
         m.shirts.forEach(s => {
           totalShirtsCount += parseInt(s.quantity || 0, 10);
         });
-      } else {
-        totalShirtsCount += (m.type === 'Casal' ? 2 : 1);
       }
     }
 
