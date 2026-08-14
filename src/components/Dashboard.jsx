@@ -23,12 +23,14 @@ const Dashboard = () => {
   activeMembers.forEach(m => {
     if (m.registrationType === 'Com Camisa') {
       peopleWithShirtCount++;
-    }
-    
-    if (m.shirts && m.shirts.length > 0) {
-      m.shirts.forEach(s => {
-        totalShirtsCount += parseInt(s.quantity || 0, 10);
-      });
+      
+      if (m.shirts && m.shirts.length > 0) {
+        m.shirts.forEach(s => {
+          totalShirtsCount += parseInt(s.quantity || 0, 10);
+        });
+      } else {
+        totalShirtsCount += (m.type === 'Casal' ? 2 : 1);
+      }
     }
 
     expectedValue += parseFloat(m.totalValue || 0);
@@ -147,7 +149,6 @@ const Dashboard = () => {
           <div>
             <p className="text-sm text-muted">Arrecadado</p>
             <p className="text-2xl font-bold">{formatCurrency(collectedValue)}</p>
-            <p className="text-sm text-muted">Esperado: {formatCurrency(expectedValue)}</p>
           </div>
         </div>
 
