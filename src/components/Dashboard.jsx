@@ -73,9 +73,22 @@ const Dashboard = () => {
                   fontSize: '1.25rem',
                   fontWeight: 'bold',
                   flexShrink: 0,
-                  boxShadow: 'inset 0 -2px 4px rgba(0,0,0,0.1)'
+                  boxShadow: 'inset 0 -2px 4px rgba(0,0,0,0.1)',
+                  overflow: 'hidden'
                 }}>
-                  {coord.charAt(0).toUpperCase()}
+                  {(() => {
+                    const normalized = coord.trim().toUpperCase();
+                    let imgSrc = null;
+                    if (normalized === 'GEOMAR') imgSrc = '/coords/geomar.png';
+                    else if (normalized === 'JULIANA') imgSrc = '/coords/juliana.png';
+                    else if (normalized === 'TIO GEOVANIO') imgSrc = '/coords/tio_geovanio.png';
+                    else if (normalized === 'TIA MEURY') imgSrc = '/coords/tia_meury.png';
+
+                    if (imgSrc) {
+                      return <img src={imgSrc} alt={coord} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
+                    }
+                    return coord.charAt(0).toUpperCase();
+                  })()}
                 </div>
                 <div style={{
                   fontWeight: '700',
