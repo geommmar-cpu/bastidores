@@ -62,6 +62,8 @@ export const AppProvider = ({ children }) => {
         // Migration Check: If we have more members locally than in Supabase, upload the missing ones
         if (localMembers && localMembers.length > finalMembers.length) {
           const supaIds = finalMembers.map(m => m.id);
+          const supaNames = finalMembers.map(m => m.name?.toLowerCase().trim());
+          
           const missing = localMembers.filter(m => !supaIds.includes(m.id));
           
           if (missing.length > 0) {
@@ -71,8 +73,13 @@ export const AppProvider = ({ children }) => {
              });
              
              for (const m of migratedMissing) {
+                // Prevent duplicate names from being migrated
+                const nameKey = m.name?.toLowerCase().trim();
+                if (supaNames.includes(nameKey)) continue;
+                
                 await supabase.from('members').insert({ id: m.id, data: m });
                 finalMembers.push(m);
+                supaNames.push(nameKey);
              }
           }
         }
@@ -168,23 +175,15 @@ export const AppProvider = ({ children }) => {
   };
 
   const updateMember = async (id, updatedData) => {
-    let updatedMember = null;
+    const currentMember = members.find(m => m.id === id);
+    if (!currentMember) return;
     
-    setMembers(prev => {
-       const newArray = prev.map(m => {
-         if (m.id === id) {
-           updatedMember = { ...m, ...updatedData };
-           return updatedMember;
-         }
-         return m;
-       });
-       return newArray;
-    });
+    const updatedMember = { ...currentMember, ...updatedData };
+    
+    setMembers(prev => prev.map(m => m.id === id ? updatedMember : m));
 
-    if (updatedMember) {
-      const { error } = await supabase.from('members').update({ data: updatedMember }).eq('id', id);
-      if (error) console.error("Erro ao atualizar membro no Supabase:", error);
-    }
+    const { error } = await supabase.from('members').update({ data: updatedMember }).eq('id', id);
+    if (error) console.error("Erro ao atualizar membro no Supabase:", error);
   };
 
   const deleteMember = async (id) => {
