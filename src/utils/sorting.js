@@ -66,7 +66,28 @@ export const getSortedMembers = (members) => {
     const roleNumB = rolePriority[roleB_val] || 99;
     if (roleNumA !== roleNumB) return roleNumA - roleNumB;
 
-    // 2. Original predefined order (with partial matching so surnames don't break it)
+    // 2. Type priority (Casal -> Jovem)
+    const typeA_val = (a.type || 'Jovem').toUpperCase();
+    const typeB_val = (b.type || 'Jovem').toUpperCase();
+    
+    const typePriority = {
+      'CASAL': 1,
+      'JOVEM': 2
+    };
+    const typeNumA = typePriority[typeA_val] || 99;
+    const typeNumB = typePriority[typeB_val] || 99;
+    if (typeNumA !== typeNumB) return typeNumA - typeNumB;
+
+    // 3. Gender priority (Meninos -> Meninas) - Applies mainly to Jovens
+    const genderPriority = {
+      'M': 1,
+      'F': 2
+    };
+    const genderA = genderPriority[(a.gender || 'M').toUpperCase()] || 99;
+    const genderB = genderPriority[(b.gender || 'M').toUpperCase()] || 99;
+    if (genderA !== genderB) return genderA - genderB;
+
+    // 4. Original predefined order (with partial matching so surnames don't break it)
     const getMatchIndex = (name) => {
       // Remove accents for better matching
       const cleanName = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -85,28 +106,7 @@ export const getSortedMembers = (members) => {
     if (indexA !== -1 && indexB === -1) return -1; // A is original, B is new -> A comes first
     if (indexA === -1 && indexB !== -1) return 1;  // B is original, A is new -> B comes first
 
-    // 3. Type priority (Casal -> Jovem) - Only applies to new members
-    const typeA_val = (a.type || 'Jovem').toUpperCase();
-    const typeB_val = (b.type || 'Jovem').toUpperCase();
-    
-    const typePriority = {
-      'CASAL': 1,
-      'JOVEM': 2
-    };
-    const typeNumA = typePriority[typeA_val] || 99;
-    const typeNumB = typePriority[typeB_val] || 99;
-    if (typeNumA !== typeNumB) return typeNumA - typeNumB;
-
-    // 4. Gender priority (Meninos -> Meninas) - Only applies to new members
-    const genderPriority = {
-      'M': 1,
-      'F': 2
-    };
-    const genderA = genderPriority[(a.gender || 'M').toUpperCase()] || 99;
-    const genderB = genderPriority[(b.gender || 'M').toUpperCase()] || 99;
-    if (genderA !== genderB) return genderA - genderB;
-
-    // 5. Alphabetical by name - Only applies to new members
+    // 5. Alphabetical by name - For new members within the same group
     return nameA.localeCompare(nameB);
   });
 };
